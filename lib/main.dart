@@ -522,7 +522,8 @@ class _MyHomePageState extends State<MyHomePage> {
     DateTime val=DateTime.parse(timeStamp);
     String formattedTime = DateFormat.Hm().format(val);
     double value=double.parse(formattedTime.replaceAll(':','.'));
-    return double.parse(formattedTime.replaceAll(':','.'));
+    double frac=double.parse((value-value.toInt()).toStringAsFixed(2));
+    return value.toInt()+frac+(0.6*frac);
   }
 
   @override
@@ -593,6 +594,23 @@ class _MyHomePageState extends State<MyHomePage> {
                               case 8:
                                 return '8';
 
+                            }
+                            return '';
+                          },
+                          margin: 15,
+                          reservedSize: 24,
+                        ),
+                        bottomTitles: SideTitles(
+                          showTitles: true,
+                          getTextStyles: (value) => TextStyle(
+                            color: Color(0xff1A1B1F),
+                            fontWeight: FontWeight.normal,
+                            fontSize: 10,
+                          ),
+                          getTitles: (value) {
+                            switch (value.toInt()) {
+                              case 0:
+                                return '';
                             }
                             return '';
                           },
