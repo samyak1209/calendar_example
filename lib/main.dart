@@ -512,18 +512,18 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     for(int i=0;i<sam.length;i++){
-      double x= parseDate(sam[i]['device_timestamp']);
+      double x= double.parse(parseDate(sam[i]['device_timestamp']));
       double y=double.parse(sam[i]['historic_glucose_mmol_l']);
       flSpot.add(FlSpot(x,y));
     }
   }
 
-  double parseDate(String timeStamp){
+  String parseDate(String timeStamp){
     DateTime val=DateTime.parse(timeStamp);
     String formattedTime = DateFormat.Hm().format(val);
     double value=double.parse(formattedTime.replaceAll(':','.'));
     double frac=double.parse((value-value.toInt()).toStringAsFixed(2));
-    return value.toInt()+frac+(0.6*frac);
+    return (value.toInt()+frac+(0.62*frac)).toStringAsFixed(2);
   }
 
   @override
@@ -543,6 +543,8 @@ class _MyHomePageState extends State<MyHomePage> {
       height: MediaQuery.of(context).size.width-60,
       child: Stack(
         children: [
+          /*Align(alignment: Alignment.centerLeft,
+          child: Container(color: Colors.white,width: 20,),),*/
           Align(alignment: Alignment.centerLeft,
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -682,6 +684,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
           ),
+
         ],
       ),
     );
@@ -791,15 +794,30 @@ class _MyHomePageState extends State<MyHomePage> {
       lineBarsData: [
         LineChartBarData(
           spots: flSpot,
-          dotData: FlDotData(show: false),isCurved: true
+          dotData: FlDotData(show: false),isCurved: true,colors: [Colors.blue,Colors.red],curveSmoothness: 0.5
         ),
       ],
       lineTouchData: LineTouchData(
-        enabled: true,fullHeightTouchLine: true,touchTooltipData: LineTouchTooltipData(showOnTopOfTheChartBoxArea: true,tooltipBgColor: Colors.black12 ),
-        touchCallback: (LineTouchResponse response){
-          print(response.touchInput.getOffset());
-        }
+        getTouchedSpotIndicator: (LineChartBarData barData, List<int> indicators){
+          return indicators.map((int index) {
+            return TouchedSpotIndicatorData(FlLine(color: Colors.green,strokeWidth: 2), FlDotData(show: false));
+          }).toList();
+        },
+        enabled: true,fullHeightTouchLine: true,touchTooltipData: LineTouchTooltipData(tooltipRoundedRadius:100,showOnTopOfTheChartBoxArea: true,tooltipBgColor: Colors.green,tooltipBottomMargin:0,
+          getTooltipItems: (List<LineBarSpot> touchedSpots){
+            return touchedSpots.map((LineBarSpot touchedSpot) {
+              if (touchedSpot == null) {
+                return null;
+              }
+              return LineTooltipItem(touchedSpot.y.toString()+" m/Mol "+touchedSpot.x.toString(), TextStyle());
+            }).toList();
+          }),
+
+        /*touchCallback: (LineTouchResponse response){
+        }*/
       ),
     );
   }
+
 }
+
