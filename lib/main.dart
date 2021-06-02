@@ -543,8 +543,6 @@ class _MyHomePageState extends State<MyHomePage> {
       height: MediaQuery.of(context).size.width-60,
       child: Stack(
         children: [
-          /*Align(alignment: Alignment.centerLeft,
-          child: Container(color: Colors.white,width: 20,),),*/
           Align(alignment: Alignment.centerLeft,
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -750,19 +748,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 return '';
               case 4:
                 return '';
-              /*case 5:
-                return '5';
-              case 6:
-                return '6';*/
               case 7:
                 return '';
               case 8:
                 return '';
-              /*case 9:
-                return '9';
-              case 10:
-                return '10';*/
-
             }
             return '';
           },
@@ -794,7 +783,7 @@ class _MyHomePageState extends State<MyHomePage> {
       lineBarsData: [
         LineChartBarData(
           spots: flSpot,
-          dotData: FlDotData(show: false),isCurved: true,colors: [Colors.blue,Colors.red],curveSmoothness: 0.5
+          dotData: FlDotData(show: false),isCurved: true,colors: [Colors.blue,Colors.red],curveSmoothness: 0.3
         ),
       ],
       lineTouchData: LineTouchData(
@@ -803,15 +792,21 @@ class _MyHomePageState extends State<MyHomePage> {
             return TouchedSpotIndicatorData(FlLine(color: Colors.green,strokeWidth: 2), FlDotData(show: false));
           }).toList();
         },
-        enabled: true,fullHeightTouchLine: true,touchTooltipData: LineTouchTooltipData(tooltipRoundedRadius:100,showOnTopOfTheChartBoxArea: true,tooltipBgColor: Colors.green,tooltipBottomMargin:0,
-          getTooltipItems: (List<LineBarSpot> touchedSpots){
-            return touchedSpots.map((LineBarSpot touchedSpot) {
-              if (touchedSpot == null) {
-                return null;
-              }
-              return LineTooltipItem(touchedSpot.y.toString()+" m/Mol "+touchedSpot.x.toString(), TextStyle());
-            }).toList();
-          }),
+        enabled: true,
+        fullHeightTouchLine: true,
+        touchTooltipData: LineTouchTooltipData(
+          tooltipRoundedRadius:100,
+            showOnTopOfTheChartBoxArea: true,
+            tooltipBgColor: Colors.green,
+            tooltipBottomMargin:0,
+            getTooltipItems: (List<LineBarSpot> touchedSpots){
+              return touchedSpots.map((LineBarSpot touchedSpot) {
+                if (touchedSpot == null) {
+                  return null;
+                }
+                return LineTooltipItem(touchedSpot.y.toString()+" m/Mol "+touchedSpot.x.toString(), TextStyle());
+              }).toList();
+            }),
 
         /*touchCallback: (LineTouchResponse response){
         }*/
